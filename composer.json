@@ -1,0 +1,18 @@
+{
+    "name": "firecore/phpdatahandler",
+    "description": "A php based Data handler designed to store Data to files",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Firecore\\Phpdatahandler\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "mbamber1986",
+            "email": "mbamber1986@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {}
+}
