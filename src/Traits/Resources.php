@@ -16,6 +16,15 @@ trait Resources
         return get_object_vars($this);
     }
 
+    
+    public function group($name, callable $handler)
+    {
+        if (is_callable($handler))
+        {
+            return $handler($this, $name);
+        }
+    }
+
     public function getstd()
     {
         return new \stdClass;

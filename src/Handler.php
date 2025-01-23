@@ -2,7 +2,6 @@
 
 namespace FireCore\DataHandler;
 
-use FireCore\DataHandler\Injections\CallIni;
 
 class Handler
 {
@@ -18,8 +17,6 @@ class Handler
 
     public function __construct($path, $name, array $class, $hasSection = true)
     {
-
-
         $count = count($class);
         if ($count === 1) {
             if (class_exists($class[0])) {
@@ -34,12 +31,15 @@ class Handler
         }
     }
 
-    
     public function checkFile(...$args)
     {
        
             if (method_exists($this->class, "checkFile")) {
                 return call_user_func_array([$this->class, "checkFile"], $args);
+            }
+            else
+            {
+                trigger_error("Cannot find Check File method");
             }
             return null;
      
@@ -93,6 +93,14 @@ class Handler
             }
             return null;
     
+    }
+
+    public function close():mixed
+    {
+        if (method_exists($this->class, "close")) {
+            return call_user_func_array([$this->class, "close"], $args);
+        }
+        return null;
     }
 
 

@@ -4,6 +4,6 @@ namespace FireCore\DataHandler\Interfaces;
 interface HandlerInterface
 {
     
-        public function read(...$args):mixed;
+        public function read(...$args):void;
 
 }
