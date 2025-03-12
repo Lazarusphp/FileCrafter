@@ -54,7 +54,6 @@ class IniWriter extends WriterCore  implements WriterInterface
     public function save(?string $name = null)
     {
   
-    // exit(print_r(self::$data));
     $name = $name ?? self::$name;
     $file = self::$path[$name];
     if(self::detectExtention($file,"ini"))
