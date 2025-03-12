@@ -10,6 +10,8 @@ interface WriterInterface
     public function set(string $key,string|int $value);
     // Removes a specific Key pair
     public function remove(string $key);
+
+    public function fetch(?string $section,?string $key);
     // Destroys entire section
     public function destroy():void;
     
