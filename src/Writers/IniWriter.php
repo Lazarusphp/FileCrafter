@@ -10,9 +10,9 @@ class IniWriter extends WriterCore  implements WriterInterface
     private static $hasSections;
 
 
-    public function parseFile($name,$hasSections=true)
+    public function parseFile($hasSections=true)
     {
-        self::$name = $name;
+        $name = self::$name;
         self::$hasSections = $hasSections;
         $file = self::$path[$name];
         self::$data = parse_ini_file($file,self::$hasSections);
