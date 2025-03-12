@@ -18,18 +18,43 @@ class IniWriter extends WriterCore  implements WriterInterface
         self::$data = parse_ini_file($file,self::$hasSections);
     }
 
-    public function get($section,$key)
+
+
+    public function decodedata(?string $name=null,$hasSections=true)
     {
-        return self::$data[$section][$key];
+        self::$hasSections = $hasSections;
+        $name = $name ?? self::$name;
+        $data = parse_ini_file(self::$path[$name],self::$hasSections);
+
+        foreach($data as $section => $value)
+        {
+            foreach($value as $key => $value)
+            {
+                self::$data[$section][$key] = $value;
+            }
+        }
     }
 
-    public function decodeData()
+    public function fetch(?string $section=null,?string $key=null)
     {
-        
+        if(isset(self::$data[$section]) && isset(self::$data[$section][$key]))
+        {
+            return self::$data[$section][$key];
+        }
+        else
+        {
+        $data = (object) self::$data;
+        foreach ($data as $section => $values) {
+            $data->$section = (object) $values;
+        }
+        return $data;
+        }
     }
 
     public function save(?string $name = null)
     {
+  
+    // exit(print_r(self::$data));
     $name = $name ?? self::$name;
     $file = self::$path[$name];
     if(self::detectExtention($file,"ini"))
@@ -47,6 +72,7 @@ class IniWriter extends WriterCore  implements WriterInterface
                 $content .= "{$key}={$val} \n";
             }
         }
+        // echo $content;
         file_put_contents($file, $content);
 
     }
