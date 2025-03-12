@@ -4,15 +4,18 @@ namespace LazarusPhp\FileHandler\Writers;
 use LazarusPhp\FileHandler\CoreFiles\WriterCore;
 use LazarusPhp\FileHandler\Interface\WriterInterface;
 
-class IniWriter extends WriterCore  implements WriterInterface
+class IniWriter extends WriterCore implements WriterInterface
 {
 
     private static $hasSections;
-
-
-    public function parseFile($hasSections=true)
+    public function __construct(string $name)
     {
-        $name = self::$name;
+        self::$name = $name;
+        $this->parseFile($name,true);
+    }
+
+    public function parseFile($name,$hasSections=true)
+    {
         self::$hasSections = $hasSections;
         $file = self::$path[$name];
         self::$data = parse_ini_file($file,self::$hasSections);
@@ -20,40 +23,20 @@ class IniWriter extends WriterCore  implements WriterInterface
 
 
 
-    public function decodedata(?string $name=null,$hasSections=true)
+    public function decodeData(?string $name=null,$hasSections=true)
     {
-        self::$hasSections = $hasSections;
-        $name = $name ?? self::$name;
-        $data = parse_ini_file(self::$path[$name],self::$hasSections);
-
-        foreach($data as $section => $value)
+        foreach(self::$data as $section => $value)
         {
             foreach($value as $key => $value)
             {
                 self::$data[$section][$key] = $value;
             }
         }
-    }
-
-    public function fetch(?string $section=null,?string $key=null)
-    {
-        if(isset(self::$data[$section]) && isset(self::$data[$section][$key]))
-        {
-            return self::$data[$section][$key];
-        }
-        else
-        {
-        $data = (object) self::$data;
-        foreach ($data as $section => $values) {
-            $data->$section = (object) $values;
-        }
-        return $data;
-        }
-    }
+    
 
     public function save(?string $name = null)
     {
-  
+
     $name = $name ?? self::$name;
     $file = self::$path[$name];
     if(self::detectExtention($file,"ini"))

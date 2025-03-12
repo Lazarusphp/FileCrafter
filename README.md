@@ -1,37 +1,24 @@
 # Installation 
 
 ```sh
-git clone https://github.com/mbamber1986/PhpDataHandler.git
+git clone https://github.com/lazarusphp/FileHandlerFramework.git
 ```
+alternativly this can be installed using composer
 ```sh
-composer install firecore/phpdatahandler
+composer require lazarusphp/filehandlerframework
 ```
 
-**Description**
-A php Datahandler Designed to Write Data to a file.
+## what is the FileHandlerFramework?
 
-**Supported Files**
+FileHandler Framework is a Dependency injection based FileWriter, it currently supports ini and json file.
 
-* Json
-
-
-
-# Usage
-
-## Binding a class
-in order for a file to be Writeable it is a requirement that the file is binds a name to the path and the class it uses.
+## Instantiating the class.
+the FileWriter itself uses a mix of both static and object based methods. Writer.php which is the entrypoint to the FileWriter requires the file path and the injected class to be tied to a name this can be done using the bind() method like so.
 
 ```php
- Writer::bind("Settings",ROOT."/Path/to/File",[JsonWriter::class]);
+use Lazarusphp\FileHandler\Writer;
+use Lazarusphp\FileHandler\Writers\JsonWriter.
+Writer::bind("Settings","Path/to/file",[JsonWriter::class]);
 ```
 
-in order to then write and save to the file 
-```php
-
-Writer::generate("Settings",function($writer)
-{
-    $writer->section("Name")->add("username","Jack");
-    $writer->save();
-})
-
-```
+Be aware that the class must be encased in and array in order to function.
