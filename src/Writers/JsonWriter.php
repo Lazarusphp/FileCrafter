@@ -11,23 +11,20 @@ class JsonWriter extends WriterCore implements WriterInterface
 
     private $flags = JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES|FILTER_SANITIZE_ADD_SLASHES;
     private $depth = 512;
+    private static $file ;
     // Initial bindings
 
-    private static function parseJson()
-    {
 
+    public function __construct($name)
+    {
+        $this->parseFile($name);
     }
 
-
-    public static function readFile($name,$asjson=false)
+    public function parseFile($name)
     {
-        $file = file_get_contents(self::$path[$name]);
-        if($asjson === true)
-        {
-            header("content-type: application/json");        
-        }
-        return $file;
+        self::$file = file_get_contents(self::$path[$name]);
     }
+
 
 
     // Clean this code a little better;
@@ -58,13 +55,6 @@ class JsonWriter extends WriterCore implements WriterInterface
      * Private classes below
      */
 
-     public static function fetch($name,$array = false)
-     {
-            $file = self::readFile($name);
-            $data = json_decode($file,$array);
-            return $data;
-     }
-
     public function decodeData(?string $name = null, $array = false)
     {
         $name = $name ?? self::$name;
@@ -76,7 +66,7 @@ class JsonWriter extends WriterCore implements WriterInterface
             }
             else{
                 // Loop through the file and set the data as an array ;
-            foreach (self::fetch($name,$array) as $section => $values) {
+            foreach (json_decode(self::$file,false) as $section => $values) {
                 foreach ($values as $key => $value) {
                     self::$data[$section][$key] = $value;
                 }
