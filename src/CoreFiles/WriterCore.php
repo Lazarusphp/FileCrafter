@@ -1,6 +1,6 @@
 <?php
 
-namespace FireCore\DataHandler\CoreFiles;
+namespace LazarusPhp\FileHandler\CoreFiles;
 use RuntimeException;
 
 class WriterCore
@@ -10,7 +10,6 @@ class WriterCore
     protected static array $path = [];
     protected static array $class = [];
     protected static $name;
-    protected static $modifierFlag;
     protected $section;
     protected $preventOverwrite = false;
 
@@ -90,7 +89,7 @@ class WriterCore
      * @param boolean $preventOverwrite
      * @return void
      */
-    public function set(string $key,string|int $value,$preventOverwrite=false):void
+    public function set(string $key,string|int $value,$preventOverwrite=false)
     {
         if($this->section)
         {
@@ -101,21 +100,10 @@ class WriterCore
             echo "failed";
             throw new RuntimeException("Failed to Load Section");
         }
+        return $this;
     }
-
-    public function update(string $key,string|int $value):void
-    {
-        if($this->section)
-        {
-            (isset(self::$data[$this->section][$key])) ? self::$data[$this->section][$key] = $value : throw new RuntimeException("Failed to update Key pair doesnt Exists");   
-        }
-          else
-        {
-            throw new RuntimeException("Failed to Load Section");
-        }
-    }
-
-    public function remove(string $key,string|int $value):void
+    
+    public function remove(string $key)
     {
         if($this->section)
         {
@@ -125,9 +113,11 @@ class WriterCore
             }
             else
             {
-                throw new RuntimeException("Failed to Remove Key pair doesnt Exists");
+                echo" failed to find $key";
             }
         }
+        return $this;
+        
     }
 
 
