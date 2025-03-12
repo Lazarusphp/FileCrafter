@@ -1,9 +1,9 @@
 <?php
 
-namespace FireCore\DataHandler\Writers;
+namespace LazarusPhp\FileHandler\Writers;
 
-use FireCore\DataHandler\CoreFiles\WriterCore;
-use FireCore\DataHandler\Interface\WriterInterface;
+use LazarusPhp\FileHandler\CoreFiles\WriterCore;
+use LazarusPhp\FileHandler\Interface\WriterInterface;
 use RuntimeException;
 
 class JsonWriter extends WriterCore implements WriterInterface
@@ -12,6 +12,11 @@ class JsonWriter extends WriterCore implements WriterInterface
     private $flags = JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES|FILTER_SANITIZE_ADD_SLASHES;
     private $depth = 512;
     // Initial bindings
+
+    private static function parseJson()
+    {
+
+    }
 
 
     public static function readFile($name,$asjson=false)
