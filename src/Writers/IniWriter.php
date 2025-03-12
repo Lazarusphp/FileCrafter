@@ -32,7 +32,7 @@ class IniWriter extends WriterCore implements WriterInterface
                 self::$data[$section][$key] = $value;
             }
         }
-    
+    }
 
     public function save(?string $name = null)
     {
