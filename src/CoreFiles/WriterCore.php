@@ -110,11 +110,12 @@ class WriterCore
         {
             if(isset(self::$data[$this->section][$key]))
             {
+                self::$data[$this->section][$key];
                 unset(self::$data[$this->section][$key]);
             }
             else
-            {
-                echo" failed to find $key";
+            { 
+             trigger_error(" failed to find $key, cannot Delete key");
             }
 
             if(count(self::$data[$this->section]) == 0)
@@ -124,6 +125,22 @@ class WriterCore
         }
         return $this;
         
+    }
+
+    public function fetch(?string $section=null,?string $key=null)
+    {
+        if(isset(self::$data[$section]) && isset(self::$data[$section][$key]))
+        {
+            return self::$data[$section][$key];
+        }
+        else
+        {
+        $data = (object) self::$data;
+        foreach ($data as $section => $values) {
+            $data->$section = (object) $values;
+        }
+        return $data;
+        }
     }
 
 
