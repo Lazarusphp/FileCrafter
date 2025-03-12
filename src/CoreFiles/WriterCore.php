@@ -16,6 +16,7 @@ class WriterCore
     protected static function unset()
     {
             self::$data = [];
+            self::$name = "";
     }
 
     protected static function detectExtention($file,$format)
@@ -114,6 +115,11 @@ class WriterCore
             else
             {
                 echo" failed to find $key";
+            }
+
+            if(count(self::$data[$this->section]) == 0)
+            {
+                unset(self::$data[$this->section]);
             }
         }
         return $this;
