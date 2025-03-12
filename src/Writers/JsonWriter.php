@@ -15,7 +15,7 @@ class JsonWriter extends WriterCore implements WriterInterface
     // Initial bindings
 
 
-    public function __construct($name)
+    public function __construct(string $name)
     {
         $this->parseFile($name);
     }
