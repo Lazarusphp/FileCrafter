@@ -24,7 +24,7 @@ class Writer extends WriterCore
             {
                 if(is_array($class))
                 if (class_exists($class[0])) {
-                    self::$class[$name] = new $class[0];
+                    self::$class[$name] = new $class[0]($name);
                 } else {
                     throw new Exception("Class: " . $class[0] . " not found");
                 }
