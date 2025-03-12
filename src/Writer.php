@@ -1,10 +1,10 @@
 <?php
-namespace FireCore\DataHandler;
+namespace LazarusPhp\FileHandler;
 
 use Exception;
-use FireCore\DataHandler\Interface\WriterInterface;
+use LazarusPhp\FileHandler\Interface\WriterInterface;
 use RuntimeException;
-use FireCore\DataHandler\CoreFiles\WriterCore;
+use LazarusPhp\FileHandler\CoreFiles\WriterCore;
 
 class Writer extends WriterCore
 {
@@ -14,7 +14,7 @@ class Writer extends WriterCore
     {
         // Detect the file;
         (!self::hasFile($file) && self::detectExtention($file,"json")) ? self::writeFile($file,"{}"): false;
-        (!self::hasFile($file) && self::detectExtention($file,"")) ? self::writeFile($file,"{}"): false;
+        (!self::hasFile($file) && self::detectExtention($file,"ini")) ? self::writeFile($file,""): false;
 
         // Bind Class
         if(self::hasFile($file))
@@ -23,7 +23,11 @@ class Writer extends WriterCore
             if($class !== null)
             {
                 if(is_array($class))
-                (class_exists($class[0])) ? self::$class[$name] = new $class[0] : throw new Exception("Class: " . $class . " not found");
+                if (class_exists($class[0])) {
+                    self::$class[$name] = new $class[0];
+                } else {
+                    throw new Exception("Class: " . $class[0] . " not found");
+                }
             }
         }
 
