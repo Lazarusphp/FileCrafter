@@ -10,6 +10,7 @@ class WriterCore
     protected static array $path = [];
     protected static array $class = [];
     protected static $name;
+    protected static $format;
     protected $section;
     protected $preventOverwrite = false;
 
@@ -19,10 +20,15 @@ class WriterCore
             self::$name = "";
     }
 
-    protected static function detectExtention($file,$format)
+
+    protected static function getPathExtention($file)
     {
-        $pathinfo = pathinfo($file);
-        $extention = $pathinfo["extension"];
+        return pathinfo($file)["extension"];
+    }
+
+    protected static function detectExtention($file,$format)
+    {   
+        $extention = self::getPathExtention($file);
         if($extention === $format)
         {
             return true;
@@ -37,6 +43,9 @@ class WriterCore
     {
         return file_put_contents($file,$contents);
     }
+
+
+    
 
     protected static function hasFile($file)
     {
