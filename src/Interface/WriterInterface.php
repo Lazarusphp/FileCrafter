@@ -5,7 +5,6 @@ namespace LazarusPhp\FileHandler\Interface;
 interface WriterInterface
 {
     public function __construct(string $name);
-    public function decodeData();
 
     // Adds a new keypair
     public function set(string $key,string|int $value);
