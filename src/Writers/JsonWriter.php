@@ -17,12 +17,30 @@ class JsonWriter extends WriterCore implements WriterInterface
 
     public function __construct(string $name)
     {
+        self::$name = $name;
+        self::$format = self::getPathExtention(self::$path[$name]);
         $this->parseFile($name);
     }
 
     public function parseFile($name)
     {
         self::$file = file_get_contents(self::$path[$name]);
+        $name = $name ?? self::$name;
+        // Validate the Array name for path exists;
+        if (array_key_exists($name, self::$path)) {
+            // check if errors are present
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                throw new RuntimeException("There was an error parsing the JSON document: " . json_last_error_msg());
+            }
+            else{
+                // Loop through the file and set the data as an array ;
+            foreach (json_decode(self::$file,false) as $section => $values) {
+                foreach ($values as $key => $value) {
+                    self::$data[$section][$key] = $value;
+                }
+            }
+        }
+        }
     }
 
 
@@ -30,10 +48,9 @@ class JsonWriter extends WriterCore implements WriterInterface
     // Clean this code a little better;
     public function save(?string $name = null)
     {
-        
             $name = $name ?? self::$name;
             $file = self::$path[$name];
-        if(self::detectExtention($file,"json"))
+        if(self::detectExtention($file,self::$format))
         {
                 if (array_key_exists($name, self::$path)) {
                     if(self::hasFile($file))
@@ -55,23 +72,5 @@ class JsonWriter extends WriterCore implements WriterInterface
      * Private classes below
      */
 
-    public function decodeData(?string $name = null, $array = false)
-    {
-        $name = $name ?? self::$name;
-        // Validate the Array name for path exists;
-        if (array_key_exists($name, self::$path)) {
-            // check if errors are present
-            if (json_last_error() !== JSON_ERROR_NONE) {
-                throw new RuntimeException("There was an error parsing the JSON document: " . json_last_error_msg());
-            }
-            else{
-                // Loop through the file and set the data as an array ;
-            foreach (json_decode(self::$file,false) as $section => $values) {
-                foreach ($values as $key => $value) {
-                    self::$data[$section][$key] = $value;
-                }
-            }
-        }
-        }
-    }
+  
 }
