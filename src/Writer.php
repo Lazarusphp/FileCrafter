@@ -10,44 +10,71 @@ class Writer extends WriterCore
 {
 
     private static WriterInterface $writerInterface;
+/**
+ * Documentation for bind
+ *
+ * @param string $name
+ * @param string $file
+ * @param array $class : class must be an array to function.
+ * @return void
+ */    
     public static function bind(string $name, string $file, array $class)
     {
         // Detect the file;
         (!self::hasFile($file) && self::detectExtention($file,"json")) ? self::writeFile($file,"{}"): false;
         (!self::hasFile($file) && self::detectExtention($file,"ini")) ? self::writeFile($file,""): false;
 
-        // Bind Class
+        // check the file exisits
         if(self::hasFile($file))
         {
             self::$path[$name] = $file;
             if($class !== null)
             {
+                // check if array exists
                 if(is_array($class))
+                // check if class exists
                 if (class_exists($class[0])) {
+                    // bind the class and the name to self::$class[$name]
                     self::$class[$name] = new $class[0]($name);
                 } else {
+                    // throw Exception class to state class doesn't exist
                     throw new Exception("Class: " . $class[0] . " not found");
                 }
             }
         }
-
-     
     }
 
 
-    public static function generate($name, callable $writer)
+/**
+ * Generate method
+ *
+ * @param string $name
+ * @param callable $writer
+ * @return void
+ * 
+ * $writer must be encased in a function()
+ *  in order access binded methods from injected class.
+ */
+    public static function generate(string $name, callable $writer)
     {
+        // Reset the self::$data array
         self::$data = [];
-        // Need to work away of preventing create and update to do the same thing
-        self::$name = $name;
-        
+        //  check if the class is not set if it isnt throw error class not found.
         if (!isset(self::$class[$name])) {
             throw new RuntimeException("Class for name: " . $name . " not found");
         }
+        // Bind Writer Interface to self::$class;
         self::$writerInterface = self::$class[$name];
-        self::$writerInterface->decodeData();
+        // Check if the function $writer is callable
         if (is_callable($writer)) {
+            // If $writer is callable return self::$writerinterface $name is optional
             return $writer(self::$writerInterface, $name);
         }
+    }
+
+    public static  function unlink($name)
+    {
+        unlink(self::$path[$name]);
+
     }
 }
