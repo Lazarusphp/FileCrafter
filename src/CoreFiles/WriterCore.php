@@ -1,6 +1,8 @@
 <?php
 
 namespace LazarusPhp\FileHandler\CoreFiles;
+
+use Exception;
 use RuntimeException;
 
 class WriterCore
@@ -14,10 +16,23 @@ class WriterCore
     protected $section;
     protected $preventOverwrite = false;
 
+    protected static $modifier;
+    protected static $selectedModifiers = [];
+
     protected static function unset()
     {
-            self::$data = [];
-            self::$name = "";
+        self::$data = [];
+        self::$name = "";
+    }
+
+
+    protected static function supportedModifier(...$modifers)
+    {
+        if (in_array(self::$modifier, $modifers)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 
@@ -26,33 +41,30 @@ class WriterCore
         return pathinfo($file)["extension"];
     }
 
-    protected static function detectExtention($file,$format)
-    {   
+    protected static function detectExtention($file, $format)
+    {
         $extention = self::getPathExtention($file);
-        if($extention === $format)
-        {
+        if ($extention === $format) {
             return true;
-        }
-        else
-        {
+        } else {
             return false;
         }
     }
 
     protected static function writeFile(string $file, string | int | array $contents)
     {
-        return file_put_contents($file,$contents);
+        return file_put_contents($file, $contents);
     }
 
 
-    
+
 
     protected static function hasFile($file)
     {
         return file_exists($file) && is_writable($file) ? true : false;
     }
 
- 
+
 
     protected static function checkFile($path): bool
     {
@@ -72,23 +84,27 @@ class WriterCore
 
     public function section(string $section)
     {
-        if (!array_key_exists($section, self::$data)) {
-            self::$data[$section] = [];
-        }
+        if (self::supportedModifier("generate")) {
+            if (!array_key_exists($section, self::$data)) {
+                self::$data[$section] = [];
+            }
 
-        if (isset(self::$data[$section])) {
-            $this->section = $section;
-            return $this;
+            if (isset(self::$data[$section])) {
+                $this->section = $section;
+                return $this;
+            } else {
+                throw new RuntimeException("Failed to find or create Section: $section");
+            }
         } else {
-            throw new RuntimeException("Failed to find or create Section: $section");
+            throw new Exception("Cannot load Modifier, Please check supported modifiers or spellings and try again");
         }
     }
 
-    
+
     public function preventOverwrite()
     {
         $this->preventOverwrite = true;
-       return $this;
+        return $this;
     }
 
     /**
@@ -99,69 +115,70 @@ class WriterCore
      * @param boolean $preventOverwrite
      * @return void
      */
-    public function set(string $key,string|int $value,$preventOverwrite=false)
+    public function set(string $key, string|int $value, $preventOverwrite = false)
     {
-        if($this->section)
-        {
-        ($preventOverwrite === false) ? self::$data[$this->section][$key] = $value : false;
+        if (self::supportedModifier("generate")) {
+            if ($this->section) {
+                ($preventOverwrite === false) ? self::$data[$this->section][$key] = $value : false;
+            } else {
+                echo "failed";
+                throw new RuntimeException("Failed to Load Section");
+            }
+            return $this;
+        } else {
+            throw new Exception("Cannot load Modifier, Please check supported modifiers or spellings and try again");
         }
-        else
-        {
-            echo "failed";
-            throw new RuntimeException("Failed to Load Section");
-        }
-        return $this;
     }
-    
+
     public function remove(string $key)
     {
-        if($this->section)
-        {
-            if(isset(self::$data[$this->section][$key]))
-            {
-                self::$data[$this->section][$key];
-                unset(self::$data[$this->section][$key]);
-            }
-            else
-            { 
-             trigger_error(" failed to find $key, cannot Delete key");
-            }
+        if (self::supportedModifier("generate")) {
+            if ($this->section) {
+                if (isset(self::$data[$this->section][$key])) {
+                    self::$data[$this->section][$key];
+                    unset(self::$data[$this->section][$key]);
+                } else {
+                    trigger_error(" failed to find $key, cannot Delete key");
+                }
 
-            if(count(self::$data[$this->section]) == 0)
-            {
+                if (count(self::$data[$this->section]) == 0) {
+                    unset(self::$data[$this->section]);
+                }
+            }
+            return $this;
+        } else {
+            throw new Exception("Cannot load Modifier, Please check supported modifiers or spellings and try again");
+        }
+    }
+
+    public function fetch(?string $section = null, ?string $key = null)
+    {
+        if (self::supportedModifier("generate")) {
+            if (isset(self::$data[$section]) && isset(self::$data[$section][$key])) {
+                return self::$data[$section][$key];
+            } else {
+                $data = (object) self::$data;
+                foreach ($data as $section => $values) {
+                    $data->$section = (object) $values;
+                }
+                return $data;
+            }
+        } else {
+            throw new Exception("Cannot load Modifier, Please check supported modifiers or spellings and try again");
+        }
+    }
+
+
+    public function destroy(): void
+    {
+        if (self::supportedModifier("generate")) {
+            if (isset($this->section)) {
                 unset(self::$data[$this->section]);
+            } else {
+                throw new RuntimeException("Failed to destroy Section : does not exist");
             }
-        }
-        return $this;
-        
-    }
-
-    public function fetch(?string $section=null,?string $key=null)
-    {
-        if(isset(self::$data[$section]) && isset(self::$data[$section][$key]))
-        {
-            return self::$data[$section][$key];
-        }
-        else
-        {
-        $data = (object) self::$data;
-        foreach ($data as $section => $values) {
-            $data->$section = (object) $values;
-        }
-        return $data;
-        }
-    }
-
-
-    public function destroy():void
-    {
-        if(isset($this->section))
-        {
-            unset(self::$data[$this->section]);
-        }
-        else
-        {
-            throw new RuntimeException("Failed to destroy Section : does not exist");
+        } else {
+            throw new Exception("Cannot load Modifier, Please check supported modifiers or spellings and try again");
         }
     }
 }
