@@ -21,19 +21,6 @@ class IniWriter extends WriterCore implements WriterInterface
         self::$data = parse_ini_file($file,self::$hasSections);
     }
 
-
-
-    public function decodeData(?string $name=null,$hasSections=true)
-    {
-        foreach(self::$data as $section => $value)
-        {
-            foreach($value as $key => $value)
-            {
-                self::$data[$section][$key] = $value;
-            }
-        }
-    }
-
     public function save(?string $name = null)
     {
 
