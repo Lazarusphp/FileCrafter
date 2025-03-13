@@ -57,6 +57,7 @@ class Writer extends WriterCore
  */
     public static function generate(string $name, callable $writer)
     {
+        self::$modifier = __FUNCTION__;
         // Reset the self::$data array
         self::$data = [];
         //  check if the class is not set if it isnt throw error class not found.
