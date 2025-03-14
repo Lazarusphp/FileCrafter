@@ -167,18 +167,4 @@ class WriterCore
             throw new Exception("Cannot load Modifier, Please check supported modifiers or spellings and try again");
         }
     }
-
-
-    public function destroy(): void
-    {
-        if (self::supportedModifier("generate")) {
-            if (isset($this->section)) {
-                unset(self::$data[$this->section]);
-            } else {
-                throw new RuntimeException("Failed to destroy Section : does not exist");
-            }
-        } else {
-            throw new Exception("Cannot load Modifier, Please check supported modifiers or spellings and try again");
-        }
-    }
 }
