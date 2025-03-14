@@ -68,7 +68,6 @@ The Writer class comes with some built in methods these include
 * section
 * set
 * remove
-* destroy
 
 all information before being saved is stored in a section and key pair array
 ```php
