@@ -80,10 +80,11 @@ class Writer extends WriterCore
         {
             if(array_key_exists($name,self::$path))
             {
+                if(unlink($file)){
                 self::$data = [];
                 unset(self::$class[$name]);
                 unset(self::$path[$name]);
-                unlink($file);
+                }
             }
             else
             {
