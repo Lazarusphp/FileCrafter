@@ -73,9 +73,26 @@ class Writer extends WriterCore
         }
     }
 
-    public static  function unlink($name)
+    public static  function destroy($name)
     {
-        unlink(self::$path[$name]);
-
+        $file = self::$path[$name];
+        if(file_exists($file))
+        {
+            if(array_key_exists($name,self::$path))
+            {
+                self::$data = [];
+                unset(self::$class[$name]);
+                unset(self::$path[$name]);
+                unlink($file);
+            }
+            else
+            {
+                throw new Exception("Array valaue $name cannot be found");
+            }
+        }
+        else
+        {
+            throw new Exception("Cannot find file");
+        }
     }
 }
