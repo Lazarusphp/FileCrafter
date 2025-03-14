@@ -53,6 +53,14 @@ set() methods key parameter (the second value) supports both integer and string 
 
 the save method must be called last in order for everything to be compiled correctly and will save to the file specified in the bind() method;
 
+## deleting and destroying a binded file.
+if needed the FileHandler comes equipped with a destroy method, this method will unset any data attached to the writer at the time along with the binded class and path name
+
+```php
+Writer::destroy("Settings");
+```
+
+
 ## Writer Methods
 
 The Writer class comes with some built in methods these include 
