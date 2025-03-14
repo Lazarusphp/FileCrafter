@@ -1,6 +1,6 @@
 <?php
 
-namespace LazarusPhp\FileHandler\Interface;
+namespace LazarusPhp\FileCrafter\Interface;
 
 interface WriterInterface
 {
@@ -12,8 +12,6 @@ interface WriterInterface
     public function remove(string $key);
 
     public function fetch(?string $section,?string $key);
-    // Destroys entire section
-    public function destroy():void;
     
 
 }

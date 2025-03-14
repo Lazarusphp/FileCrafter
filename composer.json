@@ -1,10 +1,10 @@
 {
-    "name": "firecore/phpdatahandler",
-    "description": "A php based Data handler designed to store Data to files",
+    "name": "lazarusphp/filecrafter",
+    "description": "Dependency Injection based FileHandler",
     "type": "library",
     "autoload": {
         "psr-4": {
-            "Firecore\\Phpdatahandler\\": "src/"
+            "Lazarusphp\\FileCrafter\\": "src/"
         }
     },
     "authors": [

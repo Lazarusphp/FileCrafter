@@ -1,6 +1,6 @@
 <?php
 
-namespace LazarusPhp\FileHandler\CoreFiles;
+namespace LazarusPhp\FileCrafter\CoreFiles;
 
 use Exception;
 use RuntimeException;

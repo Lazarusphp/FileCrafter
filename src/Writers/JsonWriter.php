@@ -1,9 +1,9 @@
 <?php
 
-namespace LazarusPhp\FileHandler\Writers;
+namespace LazarusPhp\FileCrafter\Writers;
 
-use LazarusPhp\FileHandler\CoreFiles\WriterCore;
-use LazarusPhp\FileHandler\Interface\WriterInterface;
+use LazarusPhp\FileCrafter\CoreFiles\WriterCore;
+use LazarusPhp\FileCrafter\Interface\WriterInterface;
 use RuntimeException;
 
 class JsonWriter extends WriterCore implements WriterInterface

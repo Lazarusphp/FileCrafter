@@ -1,10 +1,10 @@
 <?php
-namespace LazarusPhp\FileHandler;
+namespace LazarusPhp\FileCrafter;
 
 use Exception;
-use LazarusPhp\FileHandler\Interface\WriterInterface;
+use LazarusPhp\FileCrafter\Interface\WriterInterface;
 use RuntimeException;
-use LazarusPhp\FileHandler\CoreFiles\WriterCore;
+use LazarusPhp\FileCrafter\CoreFiles\WriterCore;
 
 class Writer extends WriterCore
 {
