@@ -101,8 +101,10 @@ class WriterCore
     public function set(string $section,string $key, string|int $value, $preventOverwrite = false)
     {
         if (self::supportedModifier("generate")) {
-            self::$data[$section][$key] = $value;
-       }
+            ($preventOverwrite === false) ? self::$data[$section][$key] = $value : false;
+        } else {
+            throw new Exception("Cannot load Modifier, Please check supported modifiers or spellings and try again");
+        }
     }
 
     public function remove(string $key)
