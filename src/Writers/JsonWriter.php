@@ -24,8 +24,9 @@ class JsonWriter extends WriterCore implements WriterInterface
 
     public function parseFile($name)
     {
-        self::$file = file_get_contents(self::$path[$name]);
         $name = $name ?? self::$name;
+        self::$file = file_get_contents(self::$path[$name]);
+
         // Validate the Array name for path exists;
         if (array_key_exists($name, self::$path)) {
             // check if errors are present
@@ -34,7 +35,11 @@ class JsonWriter extends WriterCore implements WriterInterface
             }
             else{
                 // Loop through the file and set the data as an array ;
-            foreach (json_decode(self::$file,false) as $section => $values) {
+            $decodedFile = json_decode(self::$file, false);
+            if (!is_array($decodedFile) && !is_object($decodedFile)) {
+                throw new RuntimeException("Invalid JSON structure in file: " . self::$path[$name]);
+            }
+            foreach ($decodedFile as $section => $values) {
                 foreach ($values as $key => $value) {
                     self::$data[$section][$key] = $value;
                 }

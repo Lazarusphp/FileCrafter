@@ -82,23 +82,6 @@ class WriterCore
 
     // Public methods shared
 
-    public function section(string $section)
-    {
-        if (self::supportedModifier("generate")) {
-            if (!array_key_exists($section, self::$data)) {
-                self::$data[$section] = [];
-            }
-
-            if (isset(self::$data[$section])) {
-                $this->section = $section;
-                return $this;
-            } else {
-                throw new RuntimeException("Failed to find or create Section: $section");
-            }
-        } else {
-            throw new Exception("Cannot load Modifier, Please check supported modifiers or spellings and try again");
-        }
-    }
 
 
     public function preventOverwrite()
@@ -115,19 +98,11 @@ class WriterCore
      * @param boolean $preventOverwrite
      * @return void
      */
-    public function set(string $key, string|int $value, $preventOverwrite = false)
+    public function set(string $section,string $key, string|int $value, $preventOverwrite = false)
     {
         if (self::supportedModifier("generate")) {
-            if ($this->section) {
-                ($preventOverwrite === false) ? self::$data[$this->section][$key] = $value : false;
-            } else {
-                echo "failed";
-                throw new RuntimeException("Failed to Load Section");
-            }
-            return $this;
-        } else {
-            throw new Exception("Cannot load Modifier, Please check supported modifiers or spellings and try again");
-        }
+            self::$data[$section][$key] = $value;
+       }
     }
 
     public function remove(string $key)

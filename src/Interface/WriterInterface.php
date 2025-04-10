@@ -6,8 +6,9 @@ interface WriterInterface
 {
     public function __construct(string $name);
 
+    public function parseFile($name);
     // Adds a new keypair
-    public function set(string $key,string|int $value);
+    public function set(string $section,string $key,string|int $value);
     // Removes a specific Key pair
     public function remove(string $key);
 

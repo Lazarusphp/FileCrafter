@@ -63,6 +63,7 @@ class FileCrafter extends WriterCore
     {
         self::$modifier = __FUNCTION__;
         // Reset the self::$data array
+       
         self::$data = [];
         //  check if the class is not set if it isnt throw error class not found.
         if (!isset(self::$class[$name])) {
@@ -70,6 +71,7 @@ class FileCrafter extends WriterCore
         }
         // Bind Writer Interface to self::$class;
         self::$writerInterface = self::$class[$name];
+        self::$writerInterface->parseFile($name);
         // Check if the function $writer is callable
         if (is_callable($writer)) {
             // If $writer is callable return self::$writerinterface $name is optional
