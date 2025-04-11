@@ -10,7 +10,7 @@ interface WriterInterface
     // Adds a new keypair
     public function set(string $section,string $key,string|int $value);
     // Removes a specific Key pair
-    public function remove(string $key);
+    public function remove(string $section,string $key);
 
     public function fetch(?string $section,?string $key);
     
