@@ -14,7 +14,7 @@ class WriterCore
     protected static $name;
     protected static $format;
     protected $section;
-    protected $preventOverwrite = false;
+    protected static  $preventOverwrite = [];
 
     protected static $modifier;
     protected static $selectedModifiers = [];
@@ -23,7 +23,9 @@ class WriterCore
     {
         self::$data = [];
         self::$name = "";
+        self::$preventOverwrite = [];
     }
+
 
 
     protected static function supportedModifier(...$modifers)
@@ -84,10 +86,21 @@ class WriterCore
 
 
 
-    public function preventOverwrite()
+    public function preventOverwrite(string $section,...$keys)
     {
-        $this->preventOverwrite = true;
-        return $this;
+        if(self::supportedModifier("generate")) {
+        foreach($keys as $key)
+        {
+            if(isset($this->fetch()->$section->$key))
+            self::$preventOverwrite[$section][$key] = true;
+        }
+    }
+    else
+        {
+            throw new Exception("Cannot load Modifier, Please check supported modifiers or spellings and try again");
+        }
+        // unset After use
+        // self::$preventOverwrite = [];
     }
 
     /**
@@ -98,28 +111,36 @@ class WriterCore
      * @param boolean $preventOverwrite
      * @return void
      */
-    public function set(string $section,string $key, string|int $value, $preventOverwrite = false)
+    public function set(string $section,string $key, string|int $value)
     {
         if (self::supportedModifier("generate")) {
+            if(isset(self::$preventOverwrite[$section][$key]))
+            {
+                $preventOverwrite = true;
+            }
+            else
+            {
+                $preventOverwrite = false;
+            }
             ($preventOverwrite === false) ? self::$data[$section][$key] = $value : false;
         } else {
             throw new Exception("Cannot load Modifier, Please check supported modifiers or spellings and try again");
         }
     }
 
-    public function remove(string $key)
+    public function remove(string $section,string $key)
     {
         if (self::supportedModifier("generate")) {
             if ($this->section) {
-                if (isset(self::$data[$this->section][$key])) {
-                    self::$data[$this->section][$key];
-                    unset(self::$data[$this->section][$key]);
+                if (isset(self::$data[$ssection][$key])) {
+                    self::$data[$section][$key];
+                    unset(self::$data[$section][$key]);
                 } else {
                     trigger_error(" failed to find $key, cannot Delete key");
                 }
 
-                if (count(self::$data[$this->section]) == 0) {
-                    unset(self::$data[$this->section]);
+                if (count(self::$data[$section]) == 0) {
+                    unset(self::$data[$section]);
                 }
             }
             return $this;
