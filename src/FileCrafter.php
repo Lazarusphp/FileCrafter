@@ -20,6 +20,11 @@ class FileCrafter extends WriterCore
  */    
     public static function bind(string $name, string $file, array $class)
     {
+    
+        if(!self::bindWritable($file))
+        {
+        }
+
         // Detect the file;
         (!self::hasFile($file) && self::detectExtention($file,"json")) ? self::writeFile($file,"{}"): false;
         (!self::hasFile($file) && self::detectExtention($file,"ini")) ? self::writeFile($file,""): false;
@@ -81,7 +86,10 @@ class FileCrafter extends WriterCore
 
     public static  function destroy($name)
     {
+        $modifier = __FUNCTION__;
+
         $file = self::$path[$name];
+
         if(file_exists($file))
         {
             if(array_key_exists($name,self::$path))
@@ -96,7 +104,7 @@ class FileCrafter extends WriterCore
             {
                 throw new Exception("Array valaue $name cannot be found");
             }
-        
+        // Remove the file
             unlink($file);
         }
         else
