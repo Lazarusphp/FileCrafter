@@ -21,10 +21,9 @@ class FileCrafter extends WriterCore
     public static function bind(string $name, string $file, array $class)
     {
     
-        if(!self::bindWritable($file))
-        {
-        }
+        self::bindWritable($file);
 
+        if(count(self::$errors) ==0){
         // Detect the file;
         (!self::hasFile($file) && self::detectExtention($file,"json")) ? self::writeFile($file,"{}"): false;
         (!self::hasFile($file) && self::detectExtention($file,"ini")) ? self::writeFile($file,""): false;
@@ -51,6 +50,16 @@ class FileCrafter extends WriterCore
         {
             echo " File Not found";
         }
+    }
+    else
+    {
+        echo "Bind Errors Found ! <hr>";
+        foreach(self::$errors as $error)
+        {
+            echo $error . "<br>";
+        }
+        exit();
+    }
     }
 
 
