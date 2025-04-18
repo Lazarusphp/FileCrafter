@@ -98,6 +98,21 @@ FileCrafter::generate("Settings",function($writer)
 });
 ```
 
+in order to read the fetch method must be used and is done without the save method, fetch can be done in both object and array format.
+```php
+
+FileCrafter::generate("Settings",function($writer)
+{
+    // Called methods go here
+    /**
+     * @method set @param $section,$key,$value;
+     * @method remove @param $section,$key
+     * @method save
+     */ 
+    echo $writer->fetch("user1","email");
+    // Alt method
+    echo $writer->fetch()->user1->email;
+});
 **Note**
 
 the save method is required in order to write/update the file.
