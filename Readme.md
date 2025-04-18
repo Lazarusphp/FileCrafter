@@ -31,7 +31,7 @@ It is recommended to have the correct permissions set in order for the bind to f
  * @method bind // name of the method called in order to bind a file and name to a class.
  * @param string $name // this is the reference which will be used to reference the file.
  * @param string $file // filename associated with flat file.
- * @param array $classname // classname which must be called for the chosen Writer ie : JsonWriter or IniWriter
+ * @param array $classname // classname which must be called for the chosen Writer ie : JsonWriter or IniWriter must also be encased in an array
  * 
  */
 
