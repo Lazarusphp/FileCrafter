@@ -34,11 +34,11 @@ class WriterCore
         $path = implode("/",$exploded);
         if(is_dir($path) && !is_writable($path) or (!is_dir($path)))
         {
-            echo "$path doesnt exist or is not writable";
-            return false;
+            self::$errors[] = "$path doesnt exist or is not writable";
         }
-        return true;
     }
+
+
 
     protected static function supportedModifier(...$modifers)
     {
