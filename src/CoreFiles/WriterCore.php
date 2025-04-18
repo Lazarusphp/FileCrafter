@@ -11,6 +11,7 @@ class WriterCore
     protected static array $data;
     protected static array $path = [];
     protected static array $class = [];
+    protected static $errors = [];
     protected static $name;
     protected static $format;
     protected $section;
@@ -26,7 +27,18 @@ class WriterCore
         self::$preventOverwrite = [];
     }
 
-
+    protected static function bindWritable(string $file)
+    {
+        $exploded = explode("/",$file);
+        array_pop($exploded);
+        $path = implode("/",$exploded);
+        if(is_dir($path) && !is_writable($path) or (!is_dir($path)))
+        {
+            echo "$path doesnt exist or is not writable";
+            return false;
+        }
+        return true;
+    }
 
     protected static function supportedModifier(...$modifers)
     {
