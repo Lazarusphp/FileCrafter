@@ -44,7 +44,7 @@ class FileCrafter extends WriterCore
         }
         else
         {
-            echo " \t File Not found";
+            echo " File Not found";
         }
     }
 
@@ -96,6 +96,8 @@ class FileCrafter extends WriterCore
             {
                 throw new Exception("Array valaue $name cannot be found");
             }
+        
+            unlink($file);
         }
         else
         {
